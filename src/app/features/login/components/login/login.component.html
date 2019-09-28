@@ -6,11 +6,18 @@
     <div class="col form-group login-form-container">
       <div class="login-form">
         <form [formGroup]="loginFormGroup">
-          <label for="username">Nome de usuário</label>
-          <input id="username" type="text" [formControlName]="username" class="form-control" />
+          <div class="row">
+            <div style="width: 15em;">
+              <label for="username">Nome de usuário</label>
+              <input id="username" type="text" [formControlName]="username" class="form-control" />
 
-          <label for="password">Senha</label>
-          <input id="password" type="password" [formControlName]="password" class="form-control" />
+              <label for="password">Senha</label>
+              <input id="password" type="password" [formControlName]="password" class="form-control" />
+            </div>
+          </div>
+          <div class="row" style="padding-top: 1.2em;">
+            <button class="btn btn-primary w-100 custom-primary-button" type="submit">LOGIN</button>
+          </div>
         </form>
       </div>
     </div>
