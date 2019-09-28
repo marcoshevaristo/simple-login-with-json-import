@@ -5,6 +5,7 @@ import { AppComponent } from "./app.component";
 import { SharedModule } from "./core/shared/shared.module";
 import { FeaturesModule } from "./features/features.module";
 import { RouterModule } from "@angular/router";
+import { CommonModule } from "@angular/common";
 
 @NgModule({
   declarations: [AppComponent],

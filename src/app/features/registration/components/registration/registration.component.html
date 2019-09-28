@@ -4,53 +4,68 @@
       <h5 class="card-title">Atualize seus dados</h5>
       <div class="col form-group login-form-container">
         <div class="login-form">
-          <form [formGroup]="registrationFormGroup">
-            <div class="row">
-              <div style="width: 15em;">
-                <label for="cpf">Nome de usuário</label>
-                <input id="username" type="text" [formControlName]="username" class="form-control" />
-
-                <label for="password">Senha</label>
-                <input id="password" type="password" [formControlName]="password" class="form-control" />
+          <form [formGroup]="registrationFormGroup" (ngSubmit)="onSubmit()">
+            <hr />
+            <div class="form-row">
+              <div class="col">
+                <label for="cpf">CPF *</label>
+                <input id="cpf" type="text" formControlName="cpf" class="form-control" placeholder="___.___.___-__">
+              </div>
+              <div class="col">
+                <label for="name">Nome</label>
+                <input id="name" type="text" formControlName="name" class="form-control" />
+              </div>
+              <div class="col">
+                <label for="description">Descrição</label>
+                <input id="description" type="text" formControlName="description" class="form-control" />
               </div>
             </div>
-            <div class="row" style="padding-top: 1.2em;">
-              <button class="btn btn-primary w-100 custom-primary-button" type="submit">LOGIN</button>
-            </div>
-          </form>
 
-          <form [formGroup]="registrationFormGroup">
-            <div class="row">
-              <div style="width: 15em;">
-                <label for="cpf">Nome de usuário</label>
-                <input id="username" type="text" [formControlName]="username" class="form-control" />
-
-                <label for="password">Senha</label>
-                <input id="password" type="password" [formControlName]="password" class="form-control" />
+            <hr />
+            <div class="form-row" formGroupName="address">
+              <div class="col">
+                <label for="street">Endereço *</label>
+                <input id="street" type="text" formControlName="street" class="form-control" />
+              </div>
+              <div class="col">
+                <label for="addressType">Tipo</label>
+                <select id="addressType" formControlName="type" class="form-control">
+                  <option *ngFor="let type of addressTypes; let i = index" [attr.value]="type"
+                    [attr.selected]="i == 0 ? true : null">{{type}}</option>
+                </select>
               </div>
             </div>
-            <div class="row" style="padding-top: 1.2em;">
-              <button class="btn btn-primary w-100 custom-primary-button" type="submit">LOGIN</button>
-            </div>
-          </form>
 
-          <form [formGroup]="registrationFormGroup">
-            <div class="row">
-              <div style="width: 15em;">
-                <label for="cpf">Nome de usuário</label>
-                <input id="username" type="text" [formControlName]="username" class="form-control" />
-
-                <label for="password">Senha</label>
-                <input id="password" type="password" [formControlName]="password" class="form-control" />
+            <hr />
+            <div class="form-row" formGroupName="phone">
+              <div class="col">
+                <label for="mobile">Celular</label>
+                <input id="mobile" type="tel" formControlName="mobile" class="form-control"
+                  placeholder="__ _____-____" />
+              </div>
+              <div class="col">
+                <label for="home">Telefone residencial</label>
+                <input id="home" type="tel" formControlName="home" class="form-control" placeholder="__ ____-____" />
+              </div>
+              <div class="col">
+                <label for="work">Telefone comercial</label>
+                <input id="work" type="tel" formControlName="work" class="form-control" placeholder="__ ____-____" />
               </div>
             </div>
-            <div class="row" style="padding-top: 1.2em;">
-              <button class="btn btn-primary w-100 custom-primary-button" type="submit">LOGIN</button>
+
+            <hr />
+            <div class="form-row">
+              <div class="col">
+                <button type="submit" class="btn btn-primary" [disabled]="!registrationFormGroup.valid">Enviar</button>
+                <button type="reset" class="btn btn-secondary form-button-margin">Limpar</button>
+              </div>
             </div>
           </form>
         </div>
       </div>
+      <div class="form-row">
+        <span>* Campos obrigatórios</span>
+      </div>
     </div>
   </div>
-
 </div>
