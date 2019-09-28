@@ -1,0 +1,18 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <img src="../../../../../assets/login-background.png" alt="Fundo" />
+    </div>
+    <div class="col form-group login-form-container">
+      <div class="login-form">
+        <form [formGroup]="loginFormGroup">
+          <label for="username">Nome de usuário</label>
+          <input id="username" type="text" [formControlName]="username" class="form-control" />
+
+          <label for="password">Senha</label>
+          <input id="password" type="password" [formControlName]="password" class="form-control" />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
