@@ -1,3 +1,5 @@
 .login-container {
-  background-image: url(../../../../assets/login-background.png)
+  background-image: url(../../../../assets/login-background.png);
+  height: 800px;
+  width: 400px;
 }

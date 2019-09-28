@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { NgModule, Injectable } from '@angular/core';
-import { RouterModule, Routes, Resolve } from '@angular/router';
+import { Injectable, NgModule } from '@angular/core';
+import { Resolve, RouterModule, Routes } from '@angular/router';
+import { of } from 'rxjs';
 import { SharedModule } from '../core/shared/shared.module';
 import { LoginComponent } from './components/login/login.component';
-import { of } from 'rxjs';
 
 @Injectable()
 export class CheckLoggedUserResolver implements Resolve<boolean> {
@@ -31,9 +31,6 @@ const routes: Routes = [{
     CommonModule,
     SharedModule,
     RouterModule.forChild(routes)
-  ],
-  declarations: [
-    LoginComponent
   ]
 })
-export class LoginModule { }
+export class LoginRoutingModule { }
