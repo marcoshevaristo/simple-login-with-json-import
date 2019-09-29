@@ -1,9 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
-import { SSL_OP_COOKIE_EXCHANGE } from "constants";
-import { CookieService } from "ngx-cookie-service";
 import { Router } from "@angular/router";
+import { CookieService } from "ngx-cookie-service";
 
 export interface User {
   username: string;
