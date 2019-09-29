@@ -7,6 +7,18 @@
           <form [formGroup]="registrationFormGroup" (ngSubmit)="onSubmit()">
             <hr />
             <div class="form-row">
+              <label for="uploadJson">Preencha o formulário manualmente ou importando um arquivo
+                JSON</label>
+              <input #inputFile id="uploadJson" type="file" accept=".json" class="form-control-file"
+                (change)="loadJsonToForm($event)">
+            </div>
+            <div class="form-row file-upload-alert">
+              <div class="alert alert-danger w-100" role="alert" *ngIf="showInvalidFileFormat">
+                O formato do arquivo enviado é inválido ou o JSON está incorreto.
+              </div>
+            </div>
+            <hr />
+            <div class="form-row">
               <div class="col">
                 <label for="cpf">CPF *</label>
                 <input id="cpf" type="text" formControlName="cpf" class="form-control" placeholder="___.___.___-__">

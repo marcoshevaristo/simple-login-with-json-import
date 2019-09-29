@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import {
   FormBuilder,
   FormControl,
@@ -6,6 +6,7 @@ import {
   Validators
 } from "@angular/forms";
 import { first } from "rxjs/operators";
+import { BaseComponent } from "src/app/base.component";
 import { AddressType, PhoneType } from "src/app/core/enums/form-enums";
 import {
   cpfPattern,
@@ -36,20 +37,27 @@ export interface RegistrationFormType {
   templateUrl: "./registration.component.html",
   styleUrls: ["./registration.component.css"]
 })
-export class RegistrationComponent implements OnInit {
+export class RegistrationComponent extends BaseComponent implements OnInit {
+  @ViewChild("inputFile", { static: false }) inputFileElem: ElementRef;
   public registrationFormGroup: FormGroup;
   public addressTypes = Object.values(AddressType);
   public showSuccess = false;
   public showFailure = false;
   public showClearInfo = false;
+  public showInvalidFileFormat = false;
+
+  private fileReader: FileReader;
 
   constructor(
     private formBuilder: FormBuilder,
     private registrationService: RegistrationService
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.setupForm();
+    this.setupFileReader();
   }
 
   public onSubmit() {
@@ -77,6 +85,48 @@ export class RegistrationComponent implements OnInit {
 
   public clearFormCallback() {
     this.showClearInfo = true;
+  }
+
+  public loadJsonToForm(event) {
+    this.isLoading = true;
+    this.showInvalidFileFormat = false;
+    this.fileReader.readAsText(event.target.files[0], "UTF-8");
+  }
+
+  private setupFileReader() {
+    this.fileReader = new FileReader();
+    this.fileReader.onload = () => {
+      try {
+        this.replicateJsonDataToForm(JSON.parse("" + this.fileReader.result));
+      } catch (error) {
+        this.setFileUploadError();
+      }
+      this.isLoading = false;
+    };
+
+    this.fileReader.onerror = () => this.setFileUploadError();
+  }
+
+  private setFileUploadError() {
+    this.showInvalidFileFormat = true;
+    this.isLoading = false;
+    this.inputFileElem.nativeElement.value = "";
+  }
+
+  private replicateJsonDataToForm(jsonObject: RegistrationFormType) {
+    Object.keys(jsonObject).forEach(key => {
+      if (key === "phone") {
+        const phoneValues = jsonObject[key];
+        phoneValues.forEach(phoneValue => {
+          this.registrationFormGroup
+            .get(key)
+            .get(phoneValue.type)
+            .setValue(phoneValue.number);
+        });
+      } else {
+        this.registrationFormGroup.get(key).setValue(jsonObject[key]);
+      }
+    });
   }
 
   private setupForm() {
