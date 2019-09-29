@@ -7,7 +7,10 @@ import {
 } from "@angular/forms";
 import { first } from "rxjs/operators";
 import { BaseComponent } from "src/app/base.component";
-import { AddressType, PhoneType } from "src/app/core/enums/form-enums";
+import {
+  AddressType,
+  RegistrationFormType
+} from "src/app/core/types/form-types";
 import {
   cpfPattern,
   formMasks,
@@ -16,21 +19,6 @@ import {
   phonePattern
 } from "src/app/core/utils/form-utils";
 import { RegistrationService } from "./registration.service";
-
-export interface RegistrationFormType {
-  cpf: string;
-  name?: string;
-  description?: string;
-  address: {
-    street: string;
-    type?: AddressType;
-  };
-  phone?: [
-    { number: string; type: PhoneType },
-    { number: string; type: PhoneType },
-    { number: string; type: PhoneType }
-  ];
-}
 
 @Component({
   selector: "app-registration",
@@ -61,6 +49,7 @@ export class RegistrationComponent extends BaseComponent implements OnInit {
   }
 
   public onSubmit() {
+    this.clearAllAlerts();
     this.showSuccess = false;
     this.showFailure = false;
     this.showClearInfo = false;
@@ -84,13 +73,20 @@ export class RegistrationComponent extends BaseComponent implements OnInit {
   }
 
   public clearFormCallback() {
+    this.clearAllAlerts();
     this.showClearInfo = true;
   }
 
   public loadJsonToForm(event) {
-    this.isLoading = true;
-    this.showInvalidFileFormat = false;
+    this.clearAllAlerts();
     this.fileReader.readAsText(event.target.files[0], "UTF-8");
+  }
+
+  private clearAllAlerts() {
+    this.showClearInfo = false;
+    this.showFailure = false;
+    this.showInvalidFileFormat = false;
+    this.showSuccess = false;
   }
 
   private setupFileReader() {
@@ -101,7 +97,6 @@ export class RegistrationComponent extends BaseComponent implements OnInit {
       } catch (error) {
         this.setFileUploadError();
       }
-      this.isLoading = false;
     };
 
     this.fileReader.onerror = () => this.setFileUploadError();
@@ -109,7 +104,6 @@ export class RegistrationComponent extends BaseComponent implements OnInit {
 
   private setFileUploadError() {
     this.showInvalidFileFormat = true;
-    this.isLoading = false;
     this.inputFileElem.nativeElement.value = "";
   }
 

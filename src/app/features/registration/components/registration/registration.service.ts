@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import { RegistrationFormType } from "./registration.component";
 import { HttpClient } from "@angular/common/http";
 import { Observable, of } from "rxjs";
+import { RegistrationFormType } from "src/app/core/types/form-types";
 
 @Injectable()
 export class RegistrationService {
