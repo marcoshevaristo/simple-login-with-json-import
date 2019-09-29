@@ -5,14 +5,15 @@ import {
   FormGroup,
   Validators
 } from "@angular/forms";
+import { first } from "rxjs/operators";
+import { AddressType, PhoneType } from "src/app/core/enums/form-enums";
 import {
+  cpfPattern,
   formMasks,
   maskSelector,
-  cpfPattern,
   mobilePhonePattern,
   phonePattern
 } from "src/app/core/utils/form-utils";
-import { AddressType, PhoneType } from "src/app/core/enums/form-enums";
 import { RegistrationService } from "./registration.service";
 
 export interface RegistrationFormType {
@@ -38,6 +39,9 @@ export interface RegistrationFormType {
 export class RegistrationComponent implements OnInit {
   public registrationFormGroup: FormGroup;
   public addressTypes = Object.values(AddressType);
+  public showSuccess = false;
+  public showFailure = false;
+  public showClearInfo = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -49,20 +53,37 @@ export class RegistrationComponent implements OnInit {
   }
 
   public onSubmit() {
+    this.showSuccess = false;
+    this.showFailure = false;
+    this.showClearInfo = false;
     let rawValues = this.registrationFormGroup.value;
-    rawValues.phone = Object.entries(rawValues.phone).map(phoneProp => {
-      return { number: phoneProp[1], type: phoneProp[0] };
-    });
+    rawValues.phone = Object.entries(rawValues.phone)
+      .filter(phoneProp => phoneProp[1])
+      .map(phoneProp => {
+        return { number: phoneProp[1], type: phoneProp[0] };
+      });
 
-    this.registrationService.sendForm(rawValues);
+    this.registrationService
+      .sendForm(rawValues)
+      .pipe(first())
+      .subscribe((output: any) => {
+        if (output.success) {
+          this.showSuccess = true;
+        } else {
+          this.showFailure = true;
+        }
+      });
+  }
+
+  public clearFormCallback() {
+    this.showClearInfo = true;
   }
 
   private setupForm() {
     this.registrationFormGroup = new FormGroup({
       cpf: new FormControl("", [
         Validators.required,
-        Validators.pattern(cpfPattern),
-        Validators.minLength(14)
+        Validators.pattern(cpfPattern)
       ]),
       name: new FormControl("", Validators.maxLength(255)),
       description: new FormControl("", Validators.maxLength(255)),

@@ -5,18 +5,24 @@
     </div>
     <div class="col form-group login-form-container">
       <div class="login-form">
-        <form [formGroup]="loginFormGroup">
+        <form [formGroup]="loginFormGroup" (ngSubmit)="onSubmit()">
           <div class="row">
             <div style="width: 15em;">
               <label for="username">Nome de usuário</label>
-              <input id="username" type="text" [formControlName]="username" class="form-control" />
+              <input id="username" type="text" formControlName="username" class="form-control" />
 
               <label for="password">Senha</label>
-              <input id="password" type="password" [formControlName]="password" class="form-control" />
+              <input id="password" type="password" formControlName="password" class="form-control" />
             </div>
           </div>
           <div class="row" style="padding-top: 1.2em;">
-            <button class="btn btn-primary w-100 custom-primary-button" type="submit">LOGIN</button>
+            <button class="btn btn-primary w-100 custom-primary-button" type="submit">
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              LOGIN
+            </button>
+            <div class="alert alert-danger" role="alert" *ngIf="showLoginFailure">
+              Usuário ou senha inválidos.
+            </div>
           </div>
         </form>
       </div>
