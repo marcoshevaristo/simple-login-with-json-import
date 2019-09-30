@@ -1,11 +1,11 @@
-.login-form-container {
-  position: relative;
-}
-
 .login-form {
-  margin: 0;
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  margin: -100px 0 0 -150px;
+  width: 15em;
+}
+
+.login-elements-margin {
+  margin-top: 1.2em;
 }

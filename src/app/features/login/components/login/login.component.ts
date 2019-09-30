@@ -37,8 +37,10 @@ export class LoginComponent extends BaseComponent implements OnInit {
     this.showLoginFailure = false;
     this.isLoading = true;
     const formValues = this.loginFormGroup.value;
-
     this.fakeLoginService.fakeLogin(formValues.username, formValues.password);
+
+    // Se passou pelo fakeLogin e não fez navegação, ocorreu um erro na autenticação.
+    this.showLoginFailure = true;
     this.isLoading = false;
   }
 }
